@@ -6,6 +6,8 @@
   makeBinaryWrapper,
   versionCheckHook,
   nodejs,
+  node-gyp,
+  python3,
 }:
 let
   workspace = "webcrack";
@@ -37,41 +39,55 @@ stdenv.mkDerivation (finalAttrs: {
   nativeInstallCheckInputs = [
     versionCheckHook
   ];
+  versionCheckProgramArg = [ "--version" ];
   doInstallCheck = true;
 
   nativeBuildInputs = [
     makeBinaryWrapper
     pnpm.configHook
     nodejs
+    node-gyp
+    python3
   ];
 
   buildPhase = ''
     runHook preBuild
+
+    pushd packages/webcrack/node_modules/isolated-vm
+    node-gyp rebuild
+    popd
 
     pnpm --filter ${workspace} build
 
     runHook postBuild
   '';
 
+  preInstall = ''
+    rm node_modules/.modules.yaml
+    rm -r node_modules/.bin
+    rm -r packages/webcrack/node_modules/.bin
+    rm -rf node_modules/.pnpm/{typescript*,prettier*}
+
+    pnpm --ignore-scripts prune --prod
+
+    find node_modules packages/webcrack/node_modules -xtype l -delete
+  '';
+
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/{bin,lib/webcrack}
-    cp -r {packages,node_modules} $out/lib/webcrack
+    mkdir -p $out/{bin,lib/packages/webcrack}
+    cp -r packages/webcrack/{dist,package.json,node_modules} $out/lib/packages/webcrack
+    cp -r node_modules $out/lib
 
     makeWrapper ${lib.getExe nodejs} $out/bin/webcrack \
-      --inherit-argv0 \
-      --add-flags $out/lib/webcrack/packages/webcrack/dist/cli.js
+     --add-flags $out/lib/packages/webcrack/dist/cli.js
 
     runHook postInstall
   '';
 
   # fix ERROR: noBrokenSymlinks
-  postFixup = ''
-    unlink $out/lib/webcrack/node_modules/.pnpm/node_modules/playground
-    unlink $out/lib/webcrack/node_modules/.pnpm/node_modules/web
-    unlink $out/lib/webcrack/node_modules/.pnpm/node_modules/docs
-  '';
+  dontCheckForBrokenSymlinks = true;
 
   meta = {
     description = "Deobfuscate obfuscator.io, unminify and unpack bundled javascript";
