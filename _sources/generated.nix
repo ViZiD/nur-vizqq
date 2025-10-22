@@ -25,15 +25,15 @@
   };
   pa = {
     pname = "pa";
-    version = "27f5563bee452c9b9986c4724c556d51d6484e6a";
+    version = "ac3aaa0f1c2579943aa565a98a461a9c382d0b4c";
     src = fetchFromGitHub {
       owner = "biox";
       repo = "pa";
-      rev = "27f5563bee452c9b9986c4724c556d51d6484e6a";
+      rev = "ac3aaa0f1c2579943aa565a98a461a9c382d0b4c";
       fetchSubmodules = false;
-      sha256 = "sha256-5TYyewtng4AEqJ9EvqFXDkcRtruUPRP/CcEoT+p94Ps=";
+      sha256 = "sha256-44CWFTZmTyeu52TXQQBG0od8RfXjlqF9kTkIgVcf9BY=";
     };
-    date = "2025-03-08";
+    date = "2025-10-16";
   };
   thinkpad-uefi-sign = {
     pname = "thinkpad-uefi-sign";
