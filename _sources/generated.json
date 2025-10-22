@@ -1,25 +1,4 @@
 {
-    "age-plugin-openpgp-card": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "age-plugin-openpgp-card",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "deepClone": false,
-            "fetchSubmodules": false,
-            "leaveDotGit": false,
-            "name": null,
-            "owner": "wiktor-k",
-            "repo": "age-plugin-openpgp-card",
-            "rev": "v0.1.1",
-            "sha256": "sha256-uJmYtc+GxJZtCjLQla/h9vpTzPcsL+zbM2uvAQsfwIY=",
-            "sparseCheckout": [],
-            "type": "github"
-        },
-        "version": "v0.1.1"
-    },
     "huawei-password-tool": {
         "cargoLocks": null,
         "date": null,
